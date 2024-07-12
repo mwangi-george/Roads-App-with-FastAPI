@@ -21,5 +21,6 @@ class Road(BaseModel):
         }
 
 
-class RoadCreatedConfirmation(BaseModel):
+class RoadCreationConfirmation(BaseModel):
     message: str | None
+    road_id: int
