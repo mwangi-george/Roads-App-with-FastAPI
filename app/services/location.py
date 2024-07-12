@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from models.locations import Locations
 from app.schemas.location import LocationCreate
+from fastapi import HTTPException, status
 
 
 class LocationServices:
@@ -29,3 +30,16 @@ class LocationServices:
         db.commit()
         db.refresh(db_location)
         return db_location
+
+    @staticmethod
+    def remove_a_location(location_id: int, db: Session):
+        db_location = db.query(Locations).filter(
+            Locations.location_id == location_id).first()
+        if db_location is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Location not found!"
+            )
+        db.delete(db_location)
+        db.commit()
+        return "Location deleted successfully!"

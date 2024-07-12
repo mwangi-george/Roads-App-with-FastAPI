@@ -1,5 +1,8 @@
 from fastapi import APIRouter, Depends
-from app.schemas.location import Location, LocationCreate, LocationCreationConfirmation
+from app.schemas.location import (
+    Location, LocationCreate, LocationCreationConfirmation,
+    LocationDeleteConfirmation,
+)
 from sqlalchemy.orm import Session
 from app.config import get_db
 from app.services.location import LocationServices
@@ -24,7 +27,7 @@ def create_location_router() -> APIRouter:
             location_id=location_id, location_details=location_details, db=db)
         return new_location
 
-    @location_router.delete("/{location_id}")
+    @location_router.delete("/{location_id}", response_model=LocationDeleteConfirmation)
     def delete_location(location_id: int, db: Session = Depends(get_db)):
         pass
 
