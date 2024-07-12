@@ -21,5 +21,5 @@ class Road(BaseModel):
         }
 
 
-class MultipleRoads(Road):
-    roads: list[Road]
+class RoadCreatedConfirmation(BaseModel):
+    message: str | None

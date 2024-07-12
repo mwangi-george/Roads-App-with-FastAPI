@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from models.roads import Roads
+from app.schemas.road import Road
 
 
 class RoadServices:

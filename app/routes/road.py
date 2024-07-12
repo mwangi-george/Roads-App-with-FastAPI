@@ -1,16 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from models.base import SessionLocal
-from app.schemas.road import Road, MultipleRoads
+from app.config import get_db
+from app.schemas.road import Road
 from app.services.road import RoadServices
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 def create_road_router() -> APIRouter:

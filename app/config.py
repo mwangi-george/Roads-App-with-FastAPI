@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from models.base import SessionLocal
 
 load_dotenv()
 
@@ -10,3 +11,11 @@ class Config:
     DB_USERNAME = os.getenv("DB_USERNAME")
     DB_PASSWORD = os.getenv("DB_PASSWORD")
     DB_PORT = os.getenv("DB_PORT")
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
