@@ -14,7 +14,7 @@ def get_db():
 
 
 def create_road_router() -> APIRouter:
-    road_router = APIRouter()
+    road_router = APIRouter(tags=["Road Details"])
     road_services = RoadServices()
 
     @road_router.get("/roads/{road_id}", response_model=Road)
