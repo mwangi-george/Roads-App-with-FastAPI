@@ -35,7 +35,7 @@ def create_location_router() -> APIRouter:
         return formatted_msg
 
     @location_router.get("/{location_id}", response_model=Location)
-    def get_location_by_id(location_id: int, db: Session = Depends(get_db)):
-        pass
+    def get_location_by_id(location_id: int, db: Session = Depends(get_db)) -> Location:
+        return location_services.get_location(location_id=location_id, db=db)
 
     return location_router

@@ -53,7 +53,7 @@ class LocationServices:
     @staticmethod
     def get_location(location_id: int, db: Session):
         db_location = db.query(Locations).filter(
-            Locations.location_id == location_id).filter()
+            Locations.location_id == location_id).first()
 
         if db_location is None:
             raise HTTPException(
