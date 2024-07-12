@@ -36,8 +36,10 @@ def create_location_router() -> APIRouter:
 
     @location_router.get("/{location_id}", response_model=Location)
     def get_location_by_id(
-            location_id: int = Path(..., title="Location Id",
-                                    description="Unique integer value for a specific location"),
+            location_id: int = Path(
+                ..., title="Location Id",
+                description="Unique integer value for a specific location"
+            ),
             db: Session = Depends(get_db)) -> Location:
         return location_services.get_location(location_id=location_id, db=db)
 
