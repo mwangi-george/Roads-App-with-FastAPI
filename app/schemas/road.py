@@ -21,6 +21,11 @@ class Road(BaseModel):
         }
 
 
+class RoadCreate(BaseModel):
+    name: str
+    length_km: float
+    construction_year: int
+
+
 class RoadCreationConfirmation(BaseModel):
     message: str | None
-    road_id: int
