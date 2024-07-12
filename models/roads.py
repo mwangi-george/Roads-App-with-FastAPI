@@ -11,3 +11,5 @@ class Roads(Base):
     construction_year = Column(Integer, index=True)
     start_location_id = Column(Integer, ForeignKey(
         "locations.location_id"), nullable=False)
+    end_location_id = Column(Integer, ForeignKey(
+        "locations.location_id"), nullable=False)
