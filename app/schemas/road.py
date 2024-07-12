@@ -19,3 +19,7 @@ class Road(BaseModel):
                 "start_location_id": 1
             }
         }
+
+
+class MultipleRoads(Road):
+    roads: list[Road]
