@@ -38,7 +38,7 @@ class LocationServices:
         return db_location
 
     @staticmethod
-    def remove_a_location(location_id: int, db: Session):
+    def remove_a_location(location_id: int, db: Session) -> str:
         db_location = db.query(Locations).filter(
             Locations.location_id == location_id).first()
         if db_location is None:
@@ -49,3 +49,15 @@ class LocationServices:
         db.delete(db_location)
         db.commit()
         return "Location deleted successfully!"
+
+    @staticmethod
+    def get_location(location_id: int, db: Session):
+        db_location = db.query(Locations).filter(
+            Locations.location_id == location_id).filter()
+
+        if db_location is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Location not found!"
+            )
+        return db_location
