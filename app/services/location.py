@@ -61,3 +61,7 @@ class LocationServices:
                 detail="Location not found!"
             )
         return db_location
+
+    @staticmethod
+    def get_locations(db: Session, start: int = 0, limit: int = 100):
+        return db.query(Locations).offset(start).limit(limit).all()
