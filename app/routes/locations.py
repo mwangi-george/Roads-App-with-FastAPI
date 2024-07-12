@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Path
+from fastapi import APIRouter, Depends, Path, status
 from app.schemas.location import (
     Location, LocationCreate, LocationCreationConfirmation,
     LocationDeleteConfirmation,
@@ -14,7 +14,7 @@ def create_location_router() -> APIRouter:
         tags=["Location Endpoints"])
     location_services = LocationServices()
 
-    @location_router.post("/", response_model=LocationCreationConfirmation)
+    @location_router.post("/", response_model=LocationCreationConfirmation, status_code=status.HTTP_201_CREATED)
     def new_location(location_details: LocationCreate, db: Session = Depends(get_db)):
         msg = location_services.create_location(
             db=db, location_details=location_details)
