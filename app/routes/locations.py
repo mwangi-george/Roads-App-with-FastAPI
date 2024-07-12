@@ -29,6 +29,9 @@ def create_location_router() -> APIRouter:
 
     @location_router.delete("/{location_id}", response_model=LocationDeleteConfirmation)
     def delete_location(location_id: int, db: Session = Depends(get_db)):
-        pass
+        msg = location_services.remove_a_location(
+            location_id=location_id, db=db)
+        formatted_msg = LocationDeleteConfirmation(msg=msg)
+        return formatted_msg
 
     return location_router
