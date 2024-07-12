@@ -17,4 +17,15 @@ class LocationServices:
         db.add(new_location)
         db.commit()
         db.refresh(new_location)
-        return "Road Created Successfully!"
+        return "Location Created Successfully!"
+
+    @staticmethod
+    def update_a_location(location_id: int, location_details: LocationCreate, db: Session):
+        db_location = db.query(Locations).filter(
+            Locations.location_id == location_id).first()
+        db_location.latitude = location_details.latitude
+        db_location.longitude = location_details.longitude
+        db_location.description = location_details.description
+        db.commit()
+        db.refresh(db_location)
+        return db_location

@@ -30,3 +30,7 @@ class LocationCreate(BaseModel):
 
 class LocationCreationConfirmation(BaseModel):
     message: str
+
+
+class LocationDeleteConfirmation(BaseModel):
+    msg: str

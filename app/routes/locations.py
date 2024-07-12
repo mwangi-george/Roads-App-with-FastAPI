@@ -6,18 +6,26 @@ from app.services.location import LocationServices
 
 
 def create_location_router() -> APIRouter:
-    location_router = APIRouter(tags=["Location Endpoints"])
+    location_router = APIRouter(
+        prefix="/locations",
+        tags=["Location Endpoints"])
     location_services = LocationServices()
 
-    @location_router.post("/locations/", response_model=LocationCreationConfirmation)
+    @location_router.post("/", response_model=LocationCreationConfirmation)
     def new_location(location_details: LocationCreate, db: Session = Depends(get_db)):
         msg = location_services.create_location(
             db=db, location_details=location_details)
         formatted_msg = LocationCreationConfirmation(message=msg)
         return formatted_msg
 
-    @location_router.put("/locations/{location_id}", response_model=Location)
+    @location_router.put("/{location_id}", response_model=Location)
     def update_location_by_id(location_id: int, location_details: LocationCreate, db: Session = Depends(get_db)):
+        new_location = location_services.update_a_location(
+            location_id=location_id, location_details=location_details, db=db)
+        return new_location
+
+    @location_router.delete("/{location_id}")
+    def delete_location(location_id: int, db: Session = Depends(get_db)):
         pass
 
     return location_router
