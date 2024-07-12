@@ -24,6 +24,12 @@ class LocationServices:
     def update_a_location(location_id: int, location_details: LocationCreate, db: Session):
         db_location = db.query(Locations).filter(
             Locations.location_id == location_id).first()
+
+        if db_location is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Location not found!"
+            )
         db_location.latitude = location_details.latitude
         db_location.longitude = location_details.longitude
         db_location.description = location_details.description
