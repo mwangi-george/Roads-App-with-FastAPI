@@ -8,6 +8,12 @@ class RoadServices:
     def __init__(self) -> None:
         pass
 
+    def road_not_found_exception(self, road_id: int):
+        return HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Road with id {road_id} was not found!"
+        )
+
     @staticmethod
     def new_road(
         start_loaction_id: int,
@@ -33,8 +39,7 @@ class RoadServices:
                 detail=f"This road's start or end location id is not available on the server. Please ensure the start and end locations are registered or contact API author for clarification"
             )
 
-    @staticmethod
-    def update_a_road(road_id: int, road_details: Road, db: Session):
+    def update_a_road(self, road_id: int, road_details: Road, db: Session):
         db_road = db.query(Roads).filter(Roads.road_id == road_id).first()
         if db_road:
             db_road.name = road_details.name
@@ -45,28 +50,23 @@ class RoadServices:
             db.commit()
             db.refresh(db_road)
             return db_road
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Road with id {road_id} was not found!"
-        )
+        raise self.road_not_found_exception(road_id=road_id)
 
-    @staticmethod
-    def remove_a_road(road_id: int, db: Session):
+    def remove_a_road(self, road_id: int, db: Session):
         db_road = db.query(Roads).filter(Roads.road_id == road_id).first()
 
         if db_road is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Road with id {road_id} was not found!"
-            )
+            raise self.road_not_found_exception(road_id=road_id)
         road_name = db_road.name
         db.delete(db_road)
         db.commit()
         return f"{road_name} was deleted successfully!"
 
-    # @staticmethod
-    # def get_road_by_id(road_id: int, db: Session):
-    #     return db.query(Roads).filter(Roads.road_id == road_id).first()
+    def get_road(self, road_id: int, db: Session):
+        db_road = db.query(Roads).filter(Roads.road_id == road_id).first()
+        if db_road is None:
+            raise self.road_not_found_exception(road_id=road_id)
+        return db_road
     # @staticmethod
     # def get_multiple_roads(db: Session, skip: int = 0, limit: int = 100):
     #     return db.query(Roads).offset(skip).limit(limit).all()
