@@ -7,6 +7,7 @@ class Road(BaseModel):
     length_km: float | None
     construction_year: int | None
     start_location_id: int
+    end_location_id: int
 
     class Config:
         from_attributes = True
@@ -16,7 +17,8 @@ class Road(BaseModel):
                 "name": "Thika Super Highway",
                 "length_km": 40,
                 "construction_year": 2010,
-                "start_location_id": 1
+                "start_location_id": 1,
+                "end_location_id": 3
             }
         }
 
