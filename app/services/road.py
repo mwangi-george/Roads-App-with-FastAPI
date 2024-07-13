@@ -71,3 +71,31 @@ class RoadServices:
     @staticmethod
     def get_multiple_roads(db: Session, start: int = 0, limit: int = 100):
         return db.query(Roads).offset(start).limit(limit).all()
+
+    @staticmethod
+    def search_roads(
+        db: Session,
+        road_id: int | None = None,
+        name: str | None = None,
+        length_km: float | None = None,
+        construction_year: int | None = None
+    ):
+        query = db.query(Roads)
+
+        if road_id:
+            query = query.filter(Roads.road_id == road_id)
+        if name:
+            query = query.filter(Roads.name == name)
+        if length_km:
+            query = query.filter(Roads.length_km == length_km)
+        if construction_year:
+            query = query.filter(Roads.construction_year == construction_year)
+
+        roads = query.all()
+
+        if len(roads) == 0:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No Roads were found with the given criteria"
+            )
+        return roads

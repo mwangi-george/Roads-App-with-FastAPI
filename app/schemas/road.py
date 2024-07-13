@@ -23,6 +23,10 @@ class Road(BaseModel):
         }
 
 
+class MultipleRoads(BaseModel):
+    roads: list[Road]
+
+
 class RoadCreate(BaseModel):
     name: str
     length_km: float
