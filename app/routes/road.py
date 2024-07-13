@@ -28,7 +28,10 @@ def create_road_router() -> APIRouter:
     @road_router.put("/{road_id}", response_model=Road)
     def update_road_details(road_id, road_details: Road, db: Session = Depends(get_db)) -> Road:
         updated_road = road_services.update_a_road(
-            road_id=road_id, road_details=road_details, db=db)
+            road_id=road_id,
+            road_details=road_details,
+            db=db
+        )
         return updated_road
 
     @road_router.delete("/{road_id}", response_model=ActionConfirmation)
