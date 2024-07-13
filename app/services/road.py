@@ -33,6 +33,19 @@ class RoadServices:
                 detail="This road's start or end location id is not available on the server. Please ensure the start and end locations are registered or contact API author for clarification"
             )
 
+    @staticmethod
+    def update_a_road(road_id: int, road_details: Road, db: Session):
+        db_road = db.query(Roads).filter(Roads.road_id == road_id).first()
+        db_road.name = road_details.name
+        db_road.length_km = road_details.length_km
+        db_road.construction_year = road_details.construction_year
+        db_road.start_location_id = road_details.start_location_id
+        db_road.end_location_id = road_details.end_location_id
+
+        db.commit()
+        db.refresh(db_road)
+        return db_road
+
     # @staticmethod
     # def get_road_by_id(road_id: int, db: Session):
     #     return db.query(Roads).filter(Roads.road_id == road_id).first()
