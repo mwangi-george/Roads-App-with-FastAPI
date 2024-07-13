@@ -26,8 +26,8 @@ def create_road_router() -> APIRouter:
         formatted_msg = ActionConfirmation(message=msg)
         return formatted_msg
 
-    @road_router.post("/post_test/", response_model=ActionConfirmation)
-    def create_road_2(
+    @road_router.post("/post_via_form/", response_model=ActionConfirmation)
+    def create_road(
         name: Annotated[str, Form()],
         length_km: Annotated[float, Form()],
         construction_year: Annotated[int, Form()],
