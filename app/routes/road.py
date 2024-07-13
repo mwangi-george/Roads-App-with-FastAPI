@@ -31,7 +31,7 @@ def create_road_router() -> APIRouter:
             road_id=road_id, road_details=road_details, db=db)
         return updated_road
 
-    @road_router.delete("/{road_id}")
+    @road_router.delete("/{road_id}", response_model=ActionConfirmation)
     def delete_road(road_id: int, db: Session = Depends(get_db)):
         pass
 

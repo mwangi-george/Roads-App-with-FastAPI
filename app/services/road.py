@@ -50,6 +50,18 @@ class RoadServices:
             detail=f"Road with id {road_id} was not found!"
         )
 
+    @staticmethod
+    def remove_a_road(road_id: int, db: Session):
+        db_road = db.query(Roads).filter(Roads.road_id == road_id).first()
+        if db_road is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Road with id {road_id} was not found!"
+            )
+        db.delete(db_road)
+        db.commit()
+        return f"Road {road_id} was deleted successfully!"
+
     # @staticmethod
     # def get_road_by_id(road_id: int, db: Session):
     #     return db.query(Roads).filter(Roads.road_id == road_id).first()
