@@ -1,8 +1,5 @@
 from fastapi import APIRouter, Depends, Path, status
-from app.schemas.location import (
-    Location, LocationCreate, LocationCreationConfirmation,
-    LocationDeleteConfirmation,
-)
+from app.schemas import *
 from sqlalchemy.orm import Session
 from app.config import get_db
 from app.services.location import LocationServices
