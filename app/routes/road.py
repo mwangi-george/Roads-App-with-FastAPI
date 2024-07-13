@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.config import get_db
-from app.schemas.road import Road, RoadCreate, RoadCreationConfirmation
+from app.schemas.road import Road, RoadCreate, ActionConfirmation
 from app.services.road import RoadServices
 
 
@@ -9,7 +9,7 @@ def create_road_router() -> APIRouter:
     road_router = APIRouter(prefix="/roads", tags=["Road Details"])
     road_services = RoadServices()
 
-    @road_router.post("/", response_model=RoadCreationConfirmation)
+    @road_router.post("/", response_model=ActionConfirmation)
     def create_road(
         start_loaction_id: int,
         end_location_id: int,
@@ -22,7 +22,7 @@ def create_road_router() -> APIRouter:
             road_details=road_details,
             db=db
         )
-        formatted_msg = RoadCreationConfirmation(message=msg)
+        formatted_msg = ActionConfirmation(message=msg)
         return formatted_msg
 
     @road_router.put("/{road_id}", response_model=Road)
@@ -30,6 +30,10 @@ def create_road_router() -> APIRouter:
         updated_road = road_services.update_a_road(
             road_id=road_id, road_details=road_details, db=db)
         return updated_road
+
+    @road_router.delete("/{road_id}")
+    def delete_road(road_id: int, db: Session = Depends(get_db)):
+        pass
 
     # @road_router.get("/roads/{road_id}/", response_model=Road)
     # def get_road_info_by_id(road_id: int, db: Session = Depends(get_db)):

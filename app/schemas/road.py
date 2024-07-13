@@ -29,5 +29,5 @@ class RoadCreate(BaseModel):
     construction_year: int
 
 
-class RoadCreationConfirmation(BaseModel):
+class ActionConfirmation(BaseModel):
     message: str | None

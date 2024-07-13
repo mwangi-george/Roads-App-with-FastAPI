@@ -30,7 +30,7 @@ class RoadServices:
         except Exception:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="This road's start or end location id is not available on the server. Please ensure the start and end locations are registered or contact API author for clarification"
+                detail=f"This road's start or end location id is not available on the server. Please ensure the start and end locations are registered or contact API author for clarification"
             )
 
     @staticmethod
