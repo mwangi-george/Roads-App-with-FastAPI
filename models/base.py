@@ -13,9 +13,13 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_PORT = os.getenv("DB_PORT")
 
 
-DATABASE_URL = f"postgresql://{DB_HOST}/{
-    DB_NAME}?user={DB_USERNAME}&password={DB_PASSWORD}"
+DATABASE_URL = "sqlite:///./app/Roads.db"
 
-engine = create_engine(url=DATABASE_URL)
+# f"postgresql://{DB_HOST}/{DB_NAME}?user={DB_USERNAME}&password={DB_PASSWORD}"
+
+engine = create_engine(
+    url=DATABASE_URL, connect_args={"check_same_thread": False}
+)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
