@@ -15,30 +15,50 @@ class RoadServices:
             detail=f"Road with id {road_id} was not found!"
         )
 
-    @staticmethod
-    def new_road(
-        start_loaction_id: int,
-        end_location_id: int,
-        road_details: RoadCreate,
-        db: Session
-    ) -> str:
+    road_creation_exception = HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail=f"This road's start or end location id is not available on the server. Please ensure the start and end locations are registered or contact API author for clarification"
+    )
+
+    def new_road(self, start_loaction_id: int, end_location_id: int, road_details: RoadCreate, db: Session) -> str:
+        db_road = Roads(
+            name=road_details.name,
+            length_km=road_details.length_km,
+            construction_year=road_details.construction_year,
+            start_location_id=start_loaction_id,
+            end_location_id=end_location_id
+        )
+        if db_road.start_location_id == db_road.end_location_id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="A road cannot start and end at the same location id!")
+
         try:
-            db_road = Roads(
-                name=road_details.name,
-                length_km=road_details.length_km,
-                construction_year=road_details.construction_year,
-                start_location_id=start_loaction_id,
-                end_location_id=end_location_id
-            )
             db.add(db_road)
             db.commit()
             db.refresh(db_road)
             return "Road createed successfully"
         except Exception:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"This road's start or end location id is not available on the server. Please ensure the start and end locations are registered or contact API author for clarification"
-            )
+            raise self.road_creation_exception
+
+    def new_road_via_form(self, name: str, length_km: float,  construction_year: int, start_loaction_id: int, end_location_id: int, db: Session):
+        db_road = Roads(
+            name=name,
+            length_km=length_km,
+            construction_year=construction_year,
+            start_location_id=start_loaction_id,
+            end_location_id=end_location_id
+        )
+        if db_road.start_location_id == db_road.end_location_id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="A road cannot start and end at the same location id!")
+
+        try:
+            db.add(db_road)
+            db.commit()
+            db.refresh(db_road)
+            return "Road createed successfully"
+        except Exception:
+            raise self.road_creation_exception
 
     def update_a_road(self, road_id: int, road_details: Road, db: Session):
         db_road = db.query(Roads).filter(Roads.road_id == road_id).first()
