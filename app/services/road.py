@@ -67,6 +67,7 @@ class RoadServices:
         if db_road is None:
             raise self.road_not_found_exception(road_id=road_id)
         return db_road
-    # @staticmethod
-    # def get_multiple_roads(db: Session, skip: int = 0, limit: int = 100):
-    #     return db.query(Roads).offset(skip).limit(limit).all()
+
+    @staticmethod
+    def get_multiple_roads(db: Session, start: int = 0, limit: int = 100):
+        return db.query(Roads).offset(start).limit(limit).all()
