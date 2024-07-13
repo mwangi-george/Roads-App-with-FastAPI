@@ -6,6 +6,7 @@ load_dotenv()
 
 
 class Config:
+    """Database configurations"""
     DB_HOST = os.getenv("DB_HOST")
     DB_NAME = os.getenv("DB_NAME")
     DB_USERNAME = os.getenv("DB_USERNAME")
