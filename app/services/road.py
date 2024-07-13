@@ -42,7 +42,6 @@ class RoadServices:
             db_road.construction_year = road_details.construction_year
             db_road.start_location_id = road_details.start_location_id
             db_road.end_location_id = road_details.end_location_id
-
             db.commit()
             db.refresh(db_road)
             return db_road
