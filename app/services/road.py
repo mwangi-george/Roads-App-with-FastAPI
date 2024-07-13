@@ -53,14 +53,16 @@ class RoadServices:
     @staticmethod
     def remove_a_road(road_id: int, db: Session):
         db_road = db.query(Roads).filter(Roads.road_id == road_id).first()
+
         if db_road is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Road with id {road_id} was not found!"
             )
+        road_name = db_road.name
         db.delete(db_road)
         db.commit()
-        return f"Road {road_id} was deleted successfully!"
+        return f"{road_name} was deleted successfully!"
 
     # @staticmethod
     # def get_road_by_id(road_id: int, db: Session):
