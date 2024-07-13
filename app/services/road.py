@@ -36,15 +36,20 @@ class RoadServices:
     @staticmethod
     def update_a_road(road_id: int, road_details: Road, db: Session):
         db_road = db.query(Roads).filter(Roads.road_id == road_id).first()
-        db_road.name = road_details.name
-        db_road.length_km = road_details.length_km
-        db_road.construction_year = road_details.construction_year
-        db_road.start_location_id = road_details.start_location_id
-        db_road.end_location_id = road_details.end_location_id
+        if db_road:
+            db_road.name = road_details.name
+            db_road.length_km = road_details.length_km
+            db_road.construction_year = road_details.construction_year
+            db_road.start_location_id = road_details.start_location_id
+            db_road.end_location_id = road_details.end_location_id
 
-        db.commit()
-        db.refresh(db_road)
-        return db_road
+            db.commit()
+            db.refresh(db_road)
+            return db_road
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Road with id {road_id} was not found!"
+        )
 
     # @staticmethod
     # def get_road_by_id(road_id: int, db: Session):

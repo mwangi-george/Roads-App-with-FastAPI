@@ -26,8 +26,10 @@ def create_road_router() -> APIRouter:
         return formatted_msg
 
     @road_router.put("/{road_id}", response_model=Road)
-    def update_road_details(road_id, road_details: Road, db: Session = Depends(get_db)):
-        pass
+    def update_road_details(road_id, road_details: Road, db: Session = Depends(get_db)) -> Road:
+        updated_road = road_services.update_a_road(
+            road_id=road_id, road_details=road_details, db=db)
+        return updated_road
 
     # @road_router.get("/roads/{road_id}/", response_model=Road)
     # def get_road_info_by_id(road_id: int, db: Session = Depends(get_db)):
