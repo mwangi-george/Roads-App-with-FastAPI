@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from models.roads import Roads
 from app.schemas.road import Road, RoadCreate
 from fastapi import HTTPException, status
@@ -81,21 +82,27 @@ class RoadServices:
         construction_year: int | None = None
     ):
         query = db.query(Roads)
+        filters = []
 
         if road_id:
-            query = query.filter(Roads.road_id == road_id)
+            filters.append(Roads.road_id == road_id)
         if name:
-            query = query.filter(Roads.name == name)
+            filters.append(Roads.name == name)
         if length_km:
-            query = query.filter(Roads.length_km == length_km)
+            filters.append(Roads.length_km == length_km)
         if construction_year:
-            query = query.filter(Roads.construction_year == construction_year)
+            filters.append(Roads.construction_year == construction_year)
 
-        roads = query.all()
-
-        if len(roads) == 0:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="No Roads were found with the given criteria"
-            )
-        return roads
+        if filters:
+            query = query.filter(or_(*filters))
+            roads = query.all()
+            if len(roads) == 0:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="No Roads were found with the given criteria"
+                )
+            return roads
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No filtering values supplied"
+        )
