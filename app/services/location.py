@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from models.locations import Locations
-from app.schemas.location import LocationCreate
+from app.schemas import LocationCreate
 from fastapi import HTTPException, status
 
 
